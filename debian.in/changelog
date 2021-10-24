@@ -1,0 +1,61 @@
+liboptions-file-perl (2.8-ku21-10) unstable; urgency=low
+
+
+ -- KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>  Sun, 24 Oct 2021 19:10:39 +0200
+
+liboptions-file-perl (2.8-ku0-0) unstable; urgency=low
+
+  * File.pm
+    - new: using the syntax "-key" you can define a value only if not already defined
+    - new: using the syntax "+key" you can append data to existing values
+
+  * STANDARDS UPDATED
+
+ -- KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>  Sat, 01 Feb 2014 18:33:21 +0100
+
+liboptions-file-perl (2.7-ku0-1) unstable; urgency=low
+
+  * File.pm
+    - mod: improved debug messages
+
+ -- KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>  Sat, 30 Nov 2013 19:00:50 +0100
+
+liboptions-file-perl (2.7-ku0) unstable; urgency=low
+
+  * File.pm
+    - fix: undefined values (orig line 717) in DUMP() function
+    - new: block definitions, using keywork '^^BLOCK^^' couples
+    - new: added s to escape chars
+    - mod: debug messages
+
+ -- KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>  Sun, 17 Nov 2013 18:03:48 +0100
+
+liboptions-file-perl (2.6-ku0) unstable; urgency=low
+
+  * File.pm
+    - fix: typo in preload function (_cuurent instead of _current)
+    - mod: some debug messages
+    - mod: moved pod doc to end of file
+
+ -- KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>  Sun, 17 Feb 2013 00:00:57 +0100
+
+liboptions-file-perl (2.6-kl3) unstable; urgency=low
+
+  * rebuilt (kubiclabs)
+
+ -- KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>  Wed, 16 Mar 2011 19:22:56 +0100
+
+liboptions-file-perl (2.6-2) unstable; urgency=low
+
+  * ported to 9.04
+  * fixed some makefile quirks
+
+ -- KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>  Sun, 09 Aug 2009 19:43:34 +0200
+
+liboptions-file-perl (2.6-1) unstable; urgency=low
+
+  * first debian packaging
+
+
+ -- KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>  Wed, 13 Jun 2007 16:40:31 +0200
+

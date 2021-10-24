@@ -1,0 +1,45 @@
+  * uploaded to github
+    - mod: updated control file and copyright
+
+2014-02-01 18:33:21 2.8 ku0.0 KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+
+  * File.pm
+    - new: using the syntax "-key" you can define a value only if not already defined
+    - new: using the syntax "+key" you can append data to existing values
+
+  * STANDARDS UPDATED
+
+2013-11-30 19:00:50 2.7 ku0.1 KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+
+  * File.pm
+    - mod: improved debug messages
+
+2013-11-17 18:03:48 2.7 ku0 KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+
+  * File.pm
+    - fix: undefined values (orig line 717) in DUMP() function
+    - new: block definitions, using keywork '^^BLOCK^^' couples
+    - new: added s to escape chars
+    - mod: debug messages
+
+2013-02-17 00:00:57 2.6 ku0 KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+
+  * File.pm
+    - fix: typo in preload function (_cuurent instead of _current)
+    - mod: some debug messages
+    - mod: moved pod doc to end of file
+
+2011-03-16 19:22:56 2.6 kl3 KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+
+  * rebuilt (kubiclabs)
+
+2009-08-09 19:43:34 2.6 2 KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+
+  * ported to 9.04
+  * fixed some makefile quirks
+
+2007-06-13 16:40:31 2.6 1 KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+
+  * first debian packaging
+
+

@@ -1,0 +1,11 @@
+:TOOLKIT	liboptions-file-perl
+:VERSION	2.8
+:RELEASE	ku21.10
+:SIGNATURE	${VERSION}-${RELEASE} (2021-10-24)
+:maintainer	KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+:homepage	http://www.kubiclabs.com/
+:copy1		maintainer: $maintainer
+:copy2		for copyright see /usr/share/doc/$TOOLKIT/copyright
+
+:default_mode	775
+

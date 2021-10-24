@@ -1,0 +1,22 @@
+Source: __TOOLKIT__
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 5.0.0)
+Build-Depends-Indep: perl (>= 5.8.8-7build1)
+Maintainer: __maintainer__
+Standards-Version: 3.7.2
+
+Package: __TOOLKIT__
+Architecture: all
+Depends: ${perl:Depends}, ${misc:Depends}, 
+Description:  Perl modules to read/write configuration files
+ Reads plain text config files in various formats, make content
+ via simple functions or, using the Options::TieFile module,
+ linking them to an associative array
+ .
+ The loaded data can be manipulated and the content written again
+ to disk; at basic level can be used to convert config files, too.
+ .
+ A powerfull feature of the module is (if enabled), an inheritance
+ mechanism that can be usefull to create complex default/overrides
+ scenarios.
