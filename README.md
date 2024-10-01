@@ -51,6 +51,14 @@ Take some features, now used by other my external tools, like
 
 ---
 
+# repositories
+
+Debian format packages, for various platforms, of the latest release
+of this project are available
+<a target="new" href="https://repos.kubit.ch">here</a>.
+
+---
+
 # note
 
 The original projects started a lot of time ago, and I was not fluent

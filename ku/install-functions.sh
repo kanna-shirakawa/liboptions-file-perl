@@ -1,13 +1,17 @@
 #!/bin/bash
 # install-functions.sh - common helpers for installation tasks
-# VERSION 1.5
 #
-# (c) 2011-2013 Lorenzo Canovi <lorenzo.canovi@kubiclabs.com>
-# released under GPL v.2
+# VERSION 1.7 (2021-10-26)
+#
+# BETTER TO NOT MODIFY THIS FILE, USE custinstall.sh INSTEAD
+#
+# (c) 2011-2021 Lorenzo Canovi <lorenzo.canovi@kubiclabs.com>
+# for copyright see /usr/share/doc/jtools/copyright
 
 # global placeholders
 #
-export TOOLKIT=		# package name
+export TOOLKIT=		# toolkit name (usually same of SOURCE)
+export SOURCE=		# package name
 export VERSION=		# package version
 export RELEASE=		# package release
 export SIGNATURE=	# package signature
@@ -28,16 +32,16 @@ export copy2=		# copyright (string 2)
 
 # actual timestamp
 #
-export today=`date`
-export dtoday=`date -R`			# for debian changelog
-export rtoday=`date '+%a %b %d %Y'`	# for rpm changelog
+export today=$(date)
+export dtoday=$(date -R)		# for debian changelog
+export rtoday=$(date '+%a %b %d %Y')	# for rpm changelog
 
 
 # internals
 #
 default_owner="root:root"
 default_mode="644"
-tempinstall=`mktemp /tmp/install-XXXXXXXXXXX`
+tempinstall=$(mktemp /tmp/install-XXXXXXXXXXX)
 
 
 
@@ -50,10 +54,11 @@ set_defaults()
 		echo "error: must define \$TOOLKIT (package name)" >&2
 		return 1
 	}
+	SOURCE=${SOURCE:-$TOOLKIT}
 
 	prefix=${prefix:-/usr}
-	confdir=${confdir:-/etc/$TOOLKIT}	# confs alsways under /etc!
-	drelease=`echo $RELEASE | tr '.' '-'`
+	confdir=${confdir:-/etc/$TOOLKIT}	# confs always under /etc!
+	drelease=$(echo $RELEASE | tr '.' '-')
 
 	if [ "$prefix" == "/" -o "$prefix" == "/usr" ]
 	then
@@ -80,12 +85,31 @@ set_defaults()
 
 ## === installfile filename dest [owner [mode [NOPARSE]]] ===
 ##
-## installa il file ''filename'' nella destinazione ''dest'',
-## impostando correttamente owner e mode
+## copy source filename to dest as target filename; if source
+## file is /dev/null an empty destination file will be created
 ##
-## alla destinazione ''dest'' viene preposta la variabile
-## DESTDIR se definita
+## if dest ends with slash (/) it will be used as directory
+## with the original filename appended
 ##
+## . owner format is "user:group", defaults to "root:root"
+## . mode format is octal perms, defaults to "644"
+##
+## the content of env $DESTDIR variable, if defined, is
+## prepended to dest
+##
+## source files will be processed and a set of pseudo_variables
+## will be substituted with the equivalent environment variables
+##
+## the syntax of pseudo_vars is __NAME__ ---> $NAME; for
+## historical reason some are __name__ ---> $NAME (see sed commmand
+## below for details)
+## note! this isn't a generic env parser, only a predefined set of
+## variables are substituted, again, look at sed command for details
+##
+## the keyword NOPARSE will prevent this, note that is not
+## possibile to pass NOPARSE keyword without passing owner and
+## mode parms
+## 
 installfile()
 {
 	local file=$1
@@ -124,8 +148,7 @@ installfile()
 		descdest="<D>$dest"
 	}
 
-	# se la destinazione finisce con "/" ed esiste la directory
-	# appende il nome del file originale alla directory
+	# destination is a directory?
 	#
 	if [ -d "$realdest" ]
 	then
@@ -135,7 +158,7 @@ installfile()
 				echo "error, you must supply a filename if source is /dev/null" >&2
 				return 1
 			}
-			realdest="$realdest`basename $file`"
+			realdest="$realdest$(basename $file)"
 		else
 			echo "installing file '$file' to '$dest'" >&2
 			echo "destination '$realdest' is a directory" >&2
@@ -159,7 +182,7 @@ installfile()
 
 	if $nullfile
 	then
-		cp /dev/null "$realdest"
+		:>"$realdest"
 	else
 		if $parse
 		then
@@ -174,6 +197,7 @@ installfile()
 			-e "s#__rtoday__#$rtoday#g" \
 			-e "s#__copy1__#$copy1#g" \
 			-e "s#__copy2__#$copy2#g" \
+			-e "s#__SOURCE__#$SOURCE#g" \
 			-e "s#__TOOLKIT__#$TOOLKIT#g" \
 			-e "s#__TOOLKIT_VERSION__#$VERSION#g" \
 			-e "s#__TOOLKIT_RELEASE__#$RELEASE#g" \
@@ -208,9 +232,11 @@ installfile()
 
 ## === create_dir path user:group [mode] ===
 ##
-## crea directory indicata da path se non esiste, creando anche
-## il path completo, in questo caso le directories intermedie
-## se non esistono vengono create con utente root:root e mode 0775
+## create a directory with parent path if needed
+##
+## if jtmkpath command is available, use it to create intermediate
+## directories in a smart way (obeyng cascade owners/perms), otherwise
+## current user and perms are used
 ##
 create_dir()
 {
@@ -219,10 +245,10 @@ create_dir()
 	local mode=${3:-"0750"}
 	local dir=
 
-	# primo giro, crea dir se non esiste, con relativo path
-	# secondo giro, fix sempre dei permessi
+	# first run, create dir if not exists, with full path if needed
+	# secon run, fix perms (always executed)
 	#
-	if [ "`which jtmkpath`" != "" ]
+	if [ "$(which jtmkpath)" != "" ]
 	then
 		jtmkpath -v $fixperms $path $user $mode || return $?
 		jtmkpath --fixperms $path $user $mode || return $?
@@ -262,6 +288,7 @@ set_vars()
 
 		case "$tag" in
 		  :TOOLKIT)	TOOLKIT="$line"; continue ;;
+		  :SOURCE)	SOURCE="$line"; continue ;;
 		  :VERSION)	VERSION="$line"; continue ;;
 		  :RELEASE)	RELEASE="$line"; continue ;;
 		  :SIGNATURE)	SIGNATURE="$line"; continue ;;
@@ -287,6 +314,7 @@ set_vars()
 	echo >&2
 	echo "settings" >&2
 	echo "  TOOLKIT:     $TOOLKIT $VERSION $RELEASE - $SIGNATURE" >&2
+	echo "  SOURCE:      $SOURCE" >&2
 	echo "  prefix:      $prefix" >&2
 	echo "  etcdir:      $etcdir" >&2
 	echo "  confdir:     $confdir" >&2
@@ -356,7 +384,7 @@ install_files()
 	exec 9<&0 <$tempinstall
 	while read file dest owner perms otherparms
 	do
-		file=`echo "$file" | sed -e 's/[ ,	]*#.*//'`
+		file=$(echo "$file" | sed -e 's/[ ,	]*#.*//')
 		owner=${owner:-$default_owner}
 		perms=${perms:-$default_mode}
 		line="$dest $owner $perms $otherparms"
@@ -370,7 +398,7 @@ install_files()
 		  *.tmp)	continue ;;
 		  "")		continue ;;
 		esac
-		files=`ls $file 2>/dev/null` || {
+		files=$(ls $file 2>/dev/null) || {
 			echo "error: '$file' does not expand to valid filename(s)" >&2
 			echo "line: $line" >&2
 			return 1
@@ -392,14 +420,14 @@ make_control_files()
 	local distro=
 	local mode=
 
-	[ -f ku/history -a "`which jtchangelog-build`" != "" ] && jtchangelog-build
+	[ -f ku/history -a "$(which jtchangelog-build)" != "" ] && jtchangelog-build
 
 	for distro in debian fedora
 	do
 		if [ -d $distro.in ]
 		then
 			echo "pre-processing $distro control files ..." >&2
-			for file in `ls $distro.in | grep -v '\.in$'`
+			for file in $(ls $distro.in | grep -v '\.in$')
 			do
 				if [ -x "$distro.in/$file" ]
 				then

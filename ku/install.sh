@@ -1,8 +1,13 @@
 #!/bin/bash
 #
-# KUBiC Labs package install file
-# based on template 1.4 (2012/10)
-
+# VERSION 1.5 (2021-10-26)
+#
+# BETTER TO NOT MODIFY THIS FILE, USE custinstall.sh INSTEAD
+#
+#
+# (c) 2011-2021 Lorenzo Canovi <lorenzo.canovi@kubiclabs.com>
+# for copyright see /usr/share/doc/jtools/copyright
+#
 set -e
 
 . ku/install-functions.sh
@@ -23,7 +28,5 @@ install_files
 	echo -e "\nsourcing custom install script: ku/custinstall.sh\n"
 	. ku/custinstall.sh
 }
-
-# add custom tasks here (better use custinstall.sh)
 
 exit 0

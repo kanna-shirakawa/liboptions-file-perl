@@ -1,0 +1,6 @@
+This is the debian package for the Perl modules
+Options::File and Options::TieFile.
+
+(c) 1994-2021 Lorenzo Canovi <kanna@kubiclabs.com>
+
+Licensed under Artistic GPL v.1+, see /usr/share/common-licenses/GPL

@@ -1,3 +1,24 @@
+  * debian/compat
+    - upd: (devuan daedalus) from 5 to 10
+
+  * debian/rules (debian.in/rules)
+    - upd: added dh_prep before dh_clean
+    - upd: removed -k option from dh_clean
+
+2023-03-14 11:51:42 2.8 ku23.03a KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+
+  * debian/rules (debian.in/rules)
+    - fix: reverted the changes of last release (compatibility issues raised by updating
+    	   release files on old systems are solved, see changes to ku-jtools)
+
+2023-03-14 11:44:28 2.8 ku23.02a KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+
+  * debian/rules (debian.in/rules)
+    - fix: force backward compatibility gzip format on newer distros (that defaults to xz):
+           added -Zgzip to dh_builddeb
+
+2022-01-29 12:15:32 2.8 ku21.10 KUBiC Labs (CH) - Lorenzo Canovi <lorenzo@kubiclabs.com>
+
   * uploaded to github
     - mod: updated control file and copyright
 
